@@ -25,12 +25,12 @@ const music = [
     {
         name: "Câu hứa Chưa Vẹn ",
         des: "Dj Đại Mèo",
-        song: "Câu Hứa Chưa Vẹn Tròn Remix.mp3",
+        song: "Vui Lắm Nha Remix.mp3",
     },
     {
         name: "Vui Lắm Nha",
         des: "Remix - Hương Ly, Jombie",
-        song: "Vui Lắm Nha Remix.mp3",
+        song: "Câu Hứa Chưa Vẹn Tròn Remix.mp3",
     },
 ]
 nextBtn.addEventListener("click", function() {
@@ -40,12 +40,9 @@ prevBtn.addEventListener("click", function() {
     changeSong(-1);
 });
 
-
-song.addEventListener("ended", handleEndSong);
-function handleEndSong() {
-    changeSong(1);
+function init() {
+    displayTimer();
 }
-
 function changeSong (dir) {
     if (dir === 1) {
         // next song
@@ -62,7 +59,10 @@ function changeSong (dir) {
         }
         isPlaying = true;
     }
-    init(music[indexSong]);
+    let indexMusic = music[indexSong];
+    song.setAttribute("src", `./music/${indexMusic.song}`);
+    nameSong.innerHTML = indexMusic.name;
+    desSong.innerHTML = indexMusic.des;
     playPause();
 }
 playBtn.addEventListener("click", playPause);
@@ -101,12 +101,7 @@ function formatTimer(time) {
 
 rangeBar.addEventListener("change", handleTimer);
 function handleTimer() {
-    song.currentTime = rangeBar.value;
+    song.value = rangeBar.value;
 }
-function init(music) {
-    song.setAttribute("src", `./music/${music.song}`);
-    nameSong.textContent = music.name;
-    desSong.textContent = music.des;
-}
-init(music[indexSong]);
-displayTimer();
+
+init();

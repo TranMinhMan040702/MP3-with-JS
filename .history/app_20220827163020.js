@@ -6,11 +6,9 @@ const nextBtn = document.querySelector(".play-forward");
 const prevBtn = document.querySelector(".play-back");
 const durationTime = document.querySelector(".duration");
 const remindingTime = document.querySelector(".reminding");
-const rangeBar = document.querySelector(".range");
 
 let isPlaying = true;
 let indexSong = 0;
-let timer;
 const music = [
     {
         name: "Halo",
@@ -25,12 +23,12 @@ const music = [
     {
         name: "Câu hứa Chưa Vẹn ",
         des: "Dj Đại Mèo",
-        song: "Câu Hứa Chưa Vẹn Tròn Remix.mp3",
+        song: "Vui Lắm Nha Remix.mp3",
     },
     {
         name: "Vui Lắm Nha",
         des: "Remix - Hương Ly, Jombie",
-        song: "Vui Lắm Nha Remix.mp3",
+        song: "Câu Hứa Chưa Vẹn Tròn Remix.mp3",
     },
 ]
 nextBtn.addEventListener("click", function() {
@@ -39,13 +37,6 @@ nextBtn.addEventListener("click", function() {
 prevBtn.addEventListener("click", function() {
     changeSong(-1);
 });
-
-
-song.addEventListener("ended", handleEndSong);
-function handleEndSong() {
-    changeSong(1);
-}
-
 function changeSong (dir) {
     if (dir === 1) {
         // next song
@@ -62,7 +53,10 @@ function changeSong (dir) {
         }
         isPlaying = true;
     }
-    init(music[indexSong]);
+    let indexMusic = music[indexSong];
+    song.setAttribute("src", `./music/${indexMusic.song}`);
+    nameSong.innerHTML = indexMusic.name;
+    desSong.innerHTML = indexMusic.des;
     playPause();
 }
 playBtn.addEventListener("click", playPause);
@@ -71,42 +65,31 @@ function playPause() {
     song.play();
     playBtn.innerHTML = `<ion-icon name="pause-outline"></ion-icon>`;
     isPlaying = false;
-    timer = setInterval(displayTimer, 500);
   } else {
     song.pause();
     playBtn.innerHTML = `<ion-icon name="play-outline" class="play-icon"></ion-icon>`;
     isPlaying = true;
-    clearInterval(timer);
   }
 }
 
 function displayTimer() {
-    const { duration, currentTime } = song;
-    rangeBar.max = duration;
-    rangeBar.value = currentTime;   
-    remindingTime.textContent = formatTimer(currentTime);
+    const { duration, current } = song;
+    range.max = duration;
+    range.value = current;
     if (!duration) {
         durationTime.textContent = "00:00";
     } else {
-        durationTime.textContent = formatTimer(duration);
+        duration = 
     }
+    console.log(duration);
 }
 
 function formatTimer(time) {
-    const minutes = Math.floor(time / 60);
+    const minutes = Math.trunc(time / 60);
     const seconds = Math.floor(time - minutes * 60);
     return `${minutes < 10 ? "0" + minutes : minutes}
-    :${seconds < 10 ? "0" + seconds : seconds}`
+    :${seconds < 10 ? "0" + seconds : seconds}`;
+    }`
 }
 
-rangeBar.addEventListener("change", handleTimer);
-function handleTimer() {
-    song.currentTime = rangeBar.value;
-}
-function init(music) {
-    song.setAttribute("src", `./music/${music.song}`);
-    nameSong.textContent = music.name;
-    desSong.textContent = music.des;
-}
-init(music[indexSong]);
-displayTimer();
+displayTimer(); 
