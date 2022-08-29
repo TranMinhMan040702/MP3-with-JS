@@ -160,7 +160,7 @@ function displayTimer() {
     rangeBar.max = duration;
     rangeBar.value = currentTime; 
     let value =  (rangeBar.value/rangeBar.max)*100;
-    rangeBar.setAttribute("style", `background: linear-gradient(90deg, #0eed65 ${value}%, transparent ${value}%`);
+    rangeBar.setAttribute("style", `background: linear-gradient(90deg, #4CAF50 ${value}%, transparent ${value}%`);
     remindingTime.textContent = formatTimer(currentTime);
     if (!duration) {
         durationTime.textContent = "00:00";
