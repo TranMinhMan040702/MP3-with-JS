@@ -52,7 +52,7 @@ body {
     margin: 0 auto 25px;
 }
 
-.music-thumb.is-playing {
+.music-thumb .is-playing {
     animation: spinner 5s infinite linear;
 }
 
@@ -123,11 +123,11 @@ body {
     z-index: 2;
 }
 
-.music-shuffle,
+.shuffle,
 .play-back,
 .play,
 .play-forward,
-.music-repeat {
+.repeat {
     cursor: pointer;
     font-size: 20px;
 }

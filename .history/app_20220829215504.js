@@ -49,7 +49,6 @@ let timer;
 let isRepeat = false;
 let isShuffle = false;
 
-// next and prev buttons
 nextBtn.addEventListener("click", function() {
     if (isShuffle) {
         handleShuffle();
@@ -58,11 +57,7 @@ nextBtn.addEventListener("click", function() {
     }
 } );
 prevBtn.addEventListener("click", function() {
-    if (isShuffle) {
-        handleShuffle();
-    } else {
-        changeSong(-1);
-    }
+    changeSong(-1);
 });
 
 // Shuffle buttons
@@ -85,7 +80,6 @@ function handleShuffle() {
     init(music[indexSong]);
     isPlaying = true;
     playPause();
-    console.log(indexSong);
 }
 
 // Repeat buttons
@@ -97,16 +91,15 @@ musicRepeat.addEventListener("click", function() {
         isRepeat = false;
         musicRepeat.removeAttribute("style");
     }
+    
 });
 
 // End song
 song.addEventListener("ended", handleEndSong);
 function handleEndSong() {
-    if (isRepeat) {
-        isPlaying = true;
-        playPause();
-    } else if (isShuffle) {
+    if (!isShuffle) {
         handleShuffle();
+        console.log(indexSong);
     } else {
         changeSong(1);
     }

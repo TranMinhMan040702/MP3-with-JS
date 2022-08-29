@@ -49,7 +49,6 @@ let timer;
 let isRepeat = false;
 let isShuffle = false;
 
-// next and prev buttons
 nextBtn.addEventListener("click", function() {
     if (isShuffle) {
         handleShuffle();

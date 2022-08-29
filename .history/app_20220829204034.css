@@ -123,11 +123,11 @@ body {
     z-index: 2;
 }
 
-.music-shuffle,
+.shuffle,
 .play-back,
 .play,
 .play-forward,
-.music-repeat {
+.repeat {
     cursor: pointer;
     font-size: 20px;
 }

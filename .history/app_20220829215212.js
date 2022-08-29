@@ -49,43 +49,34 @@ let timer;
 let isRepeat = false;
 let isShuffle = false;
 
-// next and prev buttons
 nextBtn.addEventListener("click", function() {
-    if (isShuffle) {
-        handleShuffle();
-    } else {
-        changeSong(1);
-    }
+    if (isShuffle)
+    changeSong(1);
 } );
 prevBtn.addEventListener("click", function() {
-    if (isShuffle) {
-        handleShuffle();
-    } else {
-        changeSong(-1);
-    }
+    changeSong(-1);
 });
 
 // Shuffle buttons
 musicShuffle.addEventListener("click", function() {
-    if (!isShuffle) {
-        isShuffle = true;
+    if (isShuffle) {
+        isShuffle = false;
         musicShuffle.setAttribute("style", "color:#d91594");
     } else {
-        isShuffle = false;
+        isShuffle = true;
         musicShuffle.removeAttribute("style");
     }
 });
 
 function handleShuffle() {
-    let indexRandom = Math.floor(Math.random() * (music.length ));
+    let indexRandom = Math.floor(Math.random() * (music.length - 1));
     while (indexRandom === indexSong) {
-        indexRandom = Math.floor(Math.random() * (music.length ));
+        indexRandom = Math.floor(Math.random() * (music.length - 1));
     }
     indexSong = indexRandom;
     init(music[indexSong]);
     isPlaying = true;
     playPause();
-    console.log(indexSong);
 }
 
 // Repeat buttons
@@ -97,16 +88,15 @@ musicRepeat.addEventListener("click", function() {
         isRepeat = false;
         musicRepeat.removeAttribute("style");
     }
+    
 });
 
 // End song
 song.addEventListener("ended", handleEndSong);
 function handleEndSong() {
-    if (isRepeat) {
-        isPlaying = true;
-        playPause();
-    } else if (isShuffle) {
+    if (!isShuffle) {
         handleShuffle();
+        console.log(indexSong);
     } else {
         changeSong(1);
     }

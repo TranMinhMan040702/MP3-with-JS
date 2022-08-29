@@ -49,7 +49,6 @@ let timer;
 let isRepeat = false;
 let isShuffle = false;
 
-// next and prev buttons
 nextBtn.addEventListener("click", function() {
     if (isShuffle) {
         handleShuffle();
@@ -97,15 +96,13 @@ musicRepeat.addEventListener("click", function() {
         isRepeat = false;
         musicRepeat.removeAttribute("style");
     }
+    
 });
 
 // End song
 song.addEventListener("ended", handleEndSong);
 function handleEndSong() {
-    if (isRepeat) {
-        isPlaying = true;
-        playPause();
-    } else if (isShuffle) {
+    if (!isShuffle) {
         handleShuffle();
     } else {
         changeSong(1);

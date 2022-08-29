@@ -10,8 +10,11 @@ const durationTime = document.querySelector(".duration");
 const remindingTime = document.querySelector(".reminding");
 const rangeBar = document.querySelector(".range");
 const musicRepeat = document.querySelector(".music-repeat");
-const musicShuffle = document.querySelector(".music-shuffle");
 
+let isPlaying = true;
+let indexSong = 0;
+let timer;
+let isRepeat = true;
 const music = [
     {
         id: "1",
@@ -42,77 +45,28 @@ const music = [
         image: "https://images.unsplash.com/photo-1526758097130-bab247274f58?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
     },
 ]
-
-let isPlaying = true;
-let indexSong = 0;
-let timer;
-let isRepeat = false;
-let isShuffle = false;
-
-// next and prev buttons
 nextBtn.addEventListener("click", function() {
-    if (isShuffle) {
-        handleShuffle();
-    } else {
-        changeSong(1);
-    }
+    changeSong(1);
 } );
 prevBtn.addEventListener("click", function() {
-    if (isShuffle) {
-        handleShuffle();
-    } else {
-        changeSong(-1);
-    }
+    changeSong(-1);
 });
 
-// Shuffle buttons
-musicShuffle.addEventListener("click", function() {
-    if (!isShuffle) {
-        isShuffle = true;
-        musicShuffle.setAttribute("style", "color:#d91594");
-    } else {
-        isShuffle = false;
-        musicShuffle.removeAttribute("style");
-    }
-});
-
-function handleShuffle() {
-    let indexRandom = Math.floor(Math.random() * (music.length ));
-    while (indexRandom === indexSong) {
-        indexRandom = Math.floor(Math.random() * (music.length ));
-    }
-    indexSong = indexRandom;
-    init(music[indexSong]);
-    isPlaying = true;
-    playPause();
-    console.log(indexSong);
-}
-
-// Repeat buttons
 musicRepeat.addEventListener("click", function() {
-    if (!isRepeat) {
-        isRepeat = true;
+    if (isRepeat) {
+        isRepeat = false;
         musicRepeat.setAttribute("style", "color:#d91594");
     } else {
-        isRepeat = false;
+        isRepeat = true;
         musicRepeat.removeAttribute("style");
     }
 });
 
-// End song
 song.addEventListener("ended", handleEndSong);
 function handleEndSong() {
-    if (isRepeat) {
-        isPlaying = true;
-        playPause();
-    } else if (isShuffle) {
-        handleShuffle();
-    } else {
-        changeSong(1);
-    }
+    changeSong(1);
 }
 
-// change Song
 function changeSong (dir) {
     if (dir === 1) {
         // next song
@@ -133,7 +87,6 @@ function changeSong (dir) {
     playPause();
 }
 
-// Play and Pause
 playBtn.addEventListener("click", playPause);
 function playPause() {
   if (isPlaying) {
@@ -154,7 +107,6 @@ function playPause() {
   }
 }
 
-// display timer
 function displayTimer() {
     const { duration, currentTime } = song;
     rangeBar.max = duration;
@@ -178,8 +130,6 @@ rangeBar.addEventListener("change", handleTimer);
 function handleTimer() {
     song.currentTime = rangeBar.value;
 }
-
-// initialize
 function init(music) {
     song.setAttribute("src", `./music/${music.song}`);
     musicName.textContent = music.name;

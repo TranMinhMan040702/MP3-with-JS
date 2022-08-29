@@ -46,73 +46,52 @@ const music = [
 let isPlaying = true;
 let indexSong = 0;
 let timer;
-let isRepeat = false;
-let isShuffle = false;
+let isRepeat = true;
+let isShuffle = true;
+let indexRandom = 0;
 
-// next and prev buttons
 nextBtn.addEventListener("click", function() {
-    if (isShuffle) {
-        handleShuffle();
-    } else {
-        changeSong(1);
-    }
+    changeSong(1);
 } );
 prevBtn.addEventListener("click", function() {
-    if (isShuffle) {
-        handleShuffle();
-    } else {
-        changeSong(-1);
-    }
+    changeSong(-1);
 });
 
-// Shuffle buttons
 musicShuffle.addEventListener("click", function() {
-    if (!isShuffle) {
-        isShuffle = true;
+    if (isShuffle) {
+        isShuffle = false;
         musicShuffle.setAttribute("style", "color:#d91594");
     } else {
-        isShuffle = false;
+        isShuffle = true;
         musicShuffle.removeAttribute("style");
     }
 });
 
-function handleShuffle() {
-    let indexRandom = Math.floor(Math.random() * (music.length ));
-    while (indexRandom === indexSong) {
-        indexRandom = Math.floor(Math.random() * (music.length ));
-    }
-    indexSong = indexRandom;
-    init(music[indexSong]);
-    isPlaying = true;
-    playPause();
-    console.log(indexSong);
-}
 
-// Repeat buttons
 musicRepeat.addEventListener("click", function() {
-    if (!isRepeat) {
-        isRepeat = true;
+    if (isRepeat) {
+        isRepeat = false;
         musicRepeat.setAttribute("style", "color:#d91594");
     } else {
-        isRepeat = false;
+        isRepeat = true;
         musicRepeat.removeAttribute("style");
     }
+    
 });
 
-// End song
 song.addEventListener("ended", handleEndSong);
 function handleEndSong() {
-    if (isRepeat) {
+    if (!isShuffle) {
+        indexRandom = Math.floor(Math.random() * (music.length - 1));
+        init(music[indexRandom]);
         isPlaying = true;
         playPause();
-    } else if (isShuffle) {
-        handleShuffle();
+        console.log(indexRandom);
     } else {
         changeSong(1);
     }
 }
 
-// change Song
 function changeSong (dir) {
     if (dir === 1) {
         // next song
@@ -133,7 +112,6 @@ function changeSong (dir) {
     playPause();
 }
 
-// Play and Pause
 playBtn.addEventListener("click", playPause);
 function playPause() {
   if (isPlaying) {
@@ -154,7 +132,6 @@ function playPause() {
   }
 }
 
-// display timer
 function displayTimer() {
     const { duration, currentTime } = song;
     rangeBar.max = duration;
@@ -178,8 +155,6 @@ rangeBar.addEventListener("change", handleTimer);
 function handleTimer() {
     song.currentTime = rangeBar.value;
 }
-
-// initialize
 function init(music) {
     song.setAttribute("src", `./music/${music.song}`);
     musicName.textContent = music.name;
